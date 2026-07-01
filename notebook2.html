@@ -26,6 +26,7 @@
             box-shadow: 2px 0 10px rgba(0,0,0,0.5);
             z-index: 50;
             height: 100vh;
+            flex-shrink: 0;
         }
 
         .sidebar-title {
@@ -81,18 +82,18 @@
         .main-area {
             flex: 1;
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            padding: 70px 40px 40px 320px;
-            overflow: hidden;
+            padding: 70px 40px 40px 40px;
+            overflow: auto;
+            position: relative;
+            min-width: 0;
         }
 
         .toolbar {
             position: fixed;
             top: 20px;
             left: 320px;
-            right: auto;
             background: white;
             padding: 10px 15px;
             border-radius: 8px;
@@ -101,7 +102,6 @@
             display: flex;
             gap: 8px;
             align-items: center;
-            flex-wrap: wrap;
         }
 
         .toolbar button, .toolbar .file-btn {
@@ -124,12 +124,20 @@
         
         .toolbar-separator { width: 1px; height: 24px; background: #ddd; margin: 0 4px; }
 
+        .notebook-scaler {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .notebook-container {
             background: #f5f5dc;
             box-shadow: 0 4px 20px rgba(0,0,0,0.5);
             position: relative;
             display: flex;
             flex-direction: column;
+            transform-origin: center center;
+            flex-shrink: 0;
         }
 
         .notebook-header {
@@ -154,36 +162,103 @@
         .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 
         .notebook-content {
-            position: relative; flex: 1;
+            position: relative; 
+            flex: 1;
             overflow: hidden;
         }
 
         #editor {
-            width: 100%; height: 100%;
-            color: #222; outline: none;
-            position: relative; z-index: 2; word-wrap: break-word; overflow-wrap: break-word; overflow-y: auto;
+            width: 100%; 
+            height: 100%;
+            color: #222; 
+            outline: none;
+            position: relative; 
+            z-index: 2; 
+            word-wrap: break-word; 
+            overflow-wrap: break-word; 
+            overflow-y: auto;
         }
         #editor::-webkit-scrollbar { width: 8px; }
         #editor::-webkit-scrollbar-track { background: transparent; }
         #editor::-webkit-scrollbar-thumb { background: #b8a88a; border-radius: 4px; }
         #editor p { margin: 0; padding: 0; }
 
-        #drawing-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; cursor: crosshair; z-index: 3; pointer-events: none; }
+        #drawing-canvas { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            cursor: crosshair; 
+            z-index: 3; 
+            pointer-events: none; 
+        }
         #drawing-canvas.active { pointer-events: auto; }
 
-        .left-margin { position: absolute; top: 0; bottom: 0; width: 2px; background: #d47373; z-index: 1; transition: left 0.4s ease, right 0.4s ease; }
+        .left-margin { 
+            position: absolute; 
+            top: 0; 
+            bottom: 0; 
+            width: 2px; 
+            background: #d47373; 
+            z-index: 1;
+        }
 
-        .page-footer-info { position: absolute; bottom: 15px; font-size: 20px; color: #888; z-index: 4; pointer-events: none; transition: left 0.4s ease, right 0.4s ease; }
+        .page-footer-info { 
+            position: absolute; 
+            bottom: 15px; 
+            font-size: 20px; 
+            color: #888; 
+            z-index: 4; 
+            pointer-events: none;
+        }
         .page-date-footer { font-size: 14px; color: #a0a0a0; margin-top: 2px; }
 
-        .save-indicator { position: fixed; bottom: 20px; left: 20px; background: #4CAF50; color: white; padding: 8px 16px; border-radius: 4px; font-size: 18px; opacity: 0; transition: opacity 0.3s; z-index: 200; }
+        .save-indicator { 
+            position: fixed; 
+            bottom: 20px; 
+            left: 20px; 
+            background: #4CAF50; 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 4px; 
+            font-size: 18px; 
+            opacity: 0; 
+            transition: opacity 0.3s; 
+            z-index: 200; 
+        }
         .save-indicator.show { opacity: 1; }
 
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 200; justify-content: center; align-items: center; }
+        .modal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.7); 
+            z-index: 200; 
+            justify-content: center; 
+            align-items: center; 
+        }
         .modal.active { display: flex; }
-        .modal-content { background: white; padding: 30px; border-radius: 8px; max-width: 400px; width: 90%; }
+        .modal-content { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 8px; 
+            max-width: 400px; 
+            width: 90%; 
+        }
         .modal-content h3 { font-size: 24px; margin-bottom: 15px; color: #333; }
-        .modal-content input { width: 100%; padding: 10px; font-size: 20px; border: 2px solid #ddd; border-radius: 4px; margin-bottom: 15px; outline: none; }
+        .modal-content input { 
+            width: 100%; 
+            padding: 10px; 
+            font-size: 20px; 
+            border: 2px solid #ddd; 
+            border-radius: 4px; 
+            margin-bottom: 15px; 
+            outline: none; 
+        }
         .modal-content input:focus { border-color: #4CAF50; }
         .modal-buttons { display: flex; gap: 10px; justify-content: flex-end; }
         .modal-buttons button { padding: 8px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 18px; }
@@ -213,26 +288,28 @@
             <div class="toolbar-separator"></div>
             <button id="clear-btn">🗑️ Очистить</button>
             <div class="toolbar-separator"></div>
-            <button class="file-btn" id="import-btn">📂 Импорт</button>
-            <button class="file-btn" id="quick-save-btn">💾 Сохранить</button>
+            <button class="file-btn" id="import-btn"> Импорт</button>
+            <button class="file-btn" id="quick-save-btn"> Сохранить</button>
             <input type="file" id="import-file" accept=".json" hidden>
         </div>
 
-        <div class="notebook-container" id="notebook-container">
-            <div class="notebook-header">
-                <div class="notebook-title" id="page-title-display"></div>
-                <div class="nav-arrows">
-                    <button class="nav-btn" id="prev-page" disabled>⟨</button>
-                    <button class="nav-btn" id="next-page">⟩</button>
+        <div class="notebook-scaler">
+            <div class="notebook-container" id="notebook-container">
+                <div class="notebook-header">
+                    <div class="notebook-title" id="page-title-display"></div>
+                    <div class="nav-arrows">
+                        <button class="nav-btn" id="prev-page" disabled>⟨</button>
+                        <button class="nav-btn" id="next-page">⟩</button>
+                    </div>
                 </div>
-            </div>
-            <div class="notebook-content" id="notebook-content">
-                <div id="margin-line" class="left-margin"></div>
-                <div id="editor" contenteditable="true" spellcheck="false"></div>
-                <canvas id="drawing-canvas"></canvas>
-                <div id="page-footer" class="page-footer-info">
-                    <div id="page-number-footer">стр. 1</div>
-                    <div class="page-date-footer" id="date-display"></div>
+                <div class="notebook-content" id="notebook-content">
+                    <div id="margin-line" class="left-margin"></div>
+                    <div id="editor" contenteditable="true" spellcheck="false"></div>
+                    <canvas id="drawing-canvas"></canvas>
+                    <div id="page-footer" class="page-footer-info">
+                        <div id="page-number-footer">стр. 1</div>
+                        <div class="page-date-footer" id="date-display"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -255,7 +332,6 @@
         const editor = document.getElementById('editor');
         const canvas = document.getElementById('drawing-canvas');
         const ctx = canvas.getContext('2d');
-        const content = document.getElementById('notebook-content');
         const modeToggle = document.getElementById('mode-toggle');
         const eraserBtn = document.getElementById('eraser-btn');
         const colorPicker = document.getElementById('color-picker');
@@ -272,6 +348,7 @@
         const nextBtn = document.getElementById('next-page');
         const addPageBtn = document.getElementById('add-page-btn');
         const notebookContainer = document.getElementById('notebook-container');
+        const notebookContent = document.getElementById('notebook-content');
         const pageNumberFooter = document.getElementById('page-number-footer');
         const dateDisplay = document.getElementById('date-display');
         const pageFooter = document.getElementById('page-footer');
@@ -290,68 +367,83 @@
         let savedFileHandle = null;
         let skipSaveOnLoad = false;
         
-        // Адаптивные параметры страницы
-        let currentPageWidth = 0;
-        let currentPageHeight = 0;
-        let currentLineHeight = 30;
-        let currentFontSize = 24;
+        // ЭТАЛОННЫЕ РАЗМЕРЫ (при окне 1878×931)
+        const REF_WINDOW_HEIGHT = 931;
+        const REF_NOTEBOOK_HEIGHT = 811;
+        const REF_NOTEBOOK_WIDTH = 575.177;
+        const REF_LINE_HEIGHT = 30;
+        const REF_FONT_SIZE = 24;
+        const REF_LINE_WIDTH = 495.17;
+        const REF_MARGIN_POS = 30;
+        const REF_FOOTER_FONT = 20;
+        const REF_HEADER_FONT = 24;
+        const REF_DATE_FONT = 14;
+        const REF_FOOTER_BOTTOM = 15;
+        const REF_PADDING_SMALL = 20;
+        const REF_PADDING_LARGE = 60;
         
-        // Константа: количество строк на странице (как на вашем старом мониторе 1920x1080)
-        const LINES_PER_PAGE = 32;
+        let currentScale = 1;
 
         function calculatePageSize() {
-            const availableHeight = window.innerHeight - 120;
-            const aspectRatio = 1.41; 
-            const pageHeight = availableHeight;
-            const pageWidth = pageHeight / aspectRatio;
+            const currentWindowHeight = window.innerHeight;
             
-            currentPageWidth = pageWidth;
-            currentPageHeight = pageHeight;
+            // Масштаб относительно эталонного окна
+            currentScale = currentWindowHeight / REF_WINDOW_HEIGHT;
             
+            // Вычисляем размеры блокнота
+            const pageHeight = REF_NOTEBOOK_HEIGHT * currentScale;
+            const pageWidth = REF_NOTEBOOK_WIDTH * currentScale;
+            
+            // Применяем размеры
             notebookContainer.style.width = pageWidth + 'px';
             notebookContainer.style.height = pageHeight + 'px';
             
-            // Адаптивные размеры шрифта и строки
-            currentLineHeight = pageHeight / LINES_PER_PAGE;
-            currentFontSize = currentLineHeight * 0.8;
+            // Масштабируем все элементы
+            const scaledFontSize = REF_FONT_SIZE * currentScale;
+            const scaledLineHeight = REF_LINE_HEIGHT * currentScale;
+            const scaledMarginPos = REF_MARGIN_POS * currentScale;
+            const scaledFooterFont = REF_FOOTER_FONT * currentScale;
+            const scaledHeaderFont = REF_HEADER_FONT * currentScale;
+            const scaledDateFont = REF_DATE_FONT * currentScale;
+            const scaledFooterBottom = REF_FOOTER_BOTTOM * currentScale;
+            const scaledPaddingSmall = REF_PADDING_SMALL * currentScale;
+            const scaledPaddingLarge = REF_PADDING_LARGE * currentScale;
             
-            editor.style.fontFamily = "'Caveat', cursive";
-            editor.style.fontSize = currentFontSize + 'px';
-            editor.style.lineHeight = currentLineHeight + 'px';
+            // Применяем к редактору
+            editor.style.fontSize = scaledFontSize + 'px';
+            editor.style.lineHeight = scaledLineHeight + 'px';
             
             // Обновляем разлиновку
-            content.style.backgroundSize = `100% ${currentLineHeight}px`;
-            content.style.backgroundImage = `repeating-linear-gradient(transparent, transparent ${currentLineHeight - 1}px, #b8a88a ${currentLineHeight - 1}px, #b8a88a ${currentLineHeight}px)`;
+            notebookContent.style.backgroundImage = `repeating-linear-gradient(transparent, transparent ${scaledLineHeight - 1}px, #b8a88a ${scaledLineHeight - 1}px, #b8a88a ${scaledLineHeight}px)`;
+            notebookContent.style.backgroundSize = `100% ${scaledLineHeight}px`;
             
-            // Обновляем стили уже существующих параграфов
-            updateParagraphLineHeight();
-            
-            setupCanvas();
-            updatePageLayout();
-        }
-
-        function updateParagraphLineHeight() {
-            const paragraphs = editor.querySelectorAll('p, div');
-            paragraphs.forEach(p => {
-                p.style.lineHeight = currentLineHeight + 'px';
-            });
-        }
-
-        function updatePageLayout() {
+            // Обновляем отступы редактора
             const isEven = (currentPageIndex + 1) % 2 === 0;
+            editor.style.padding = isEven ? `0 ${scaledPaddingLarge}px 0 ${scaledPaddingSmall}px` : `0 ${scaledPaddingSmall}px 0 ${scaledPaddingLarge}px`;
             
-            // Адаптивные отступы (пропорциональны ширине страницы)
-            const padding = currentPageWidth * 0.088;
-            const smallPadding = currentPageWidth * 0.03;
-            editor.style.padding = isEven ? `0 ${padding}px 0 ${smallPadding}px` : `0 ${smallPadding}px 0 ${padding}px`;
+            // Обновляем позицию margin line
+            marginLine.style.left = isEven ? 'auto' : scaledMarginPos + 'px';
+            marginLine.style.right = isEven ? scaledMarginPos + 'px' : 'auto';
             
-            // Адаптивная позиция полей и футера
-            const offset = currentPageWidth * 0.044;
-            marginLine.style.left = isEven ? 'auto' : offset + 'px';
-            marginLine.style.right = isEven ? offset + 'px' : 'auto';
+            // Обновляем footer
+            pageFooter.style.fontSize = scaledFooterFont + 'px';
+            pageFooter.style.bottom = scaledFooterBottom + 'px';
+            pageFooter.style.left = isEven ? 'auto' : scaledMarginPos + 'px';
+            pageFooter.style.right = isEven ? scaledMarginPos + 'px' : 'auto';
             
-            pageFooter.style.left = isEven ? 'auto' : offset + 'px';
-            pageFooter.style.right = isEven ? offset + 'px' : 'auto';
+            // Обновляем дату в footer
+            const dateFooter = document.querySelector('.page-date-footer');
+            if (dateFooter) {
+                dateFooter.style.fontSize = scaledDateFont + 'px';
+            }
+            
+            // Обновляем header
+            const notebookTitle = document.querySelector('.notebook-title');
+            notebookTitle.style.fontSize = scaledHeaderFont + 'px';
+            
+            console.log(`📏 Scale: ${currentScale.toFixed(3)} | Window: ${window.innerWidth}×${window.innerHeight} | Page: ${Math.round(pageWidth)}×${Math.round(pageHeight)} | Font: ${scaledFontSize.toFixed(1)}px | Line: ${scaledLineHeight.toFixed(1)}px`);
+            
+            setTimeout(() => setupCanvas(), 50);
         }
 
         function init() {
@@ -360,6 +452,7 @@
                 const now = new Date();
                 pages.push({ text: '', drawing: null, title: formatDate(now), date: now.toISOString() });
             }
+            
             calculatePageSize();
             
             skipSaveOnLoad = true;
@@ -381,8 +474,8 @@
             if (canvas.width > 0 && canvas.height > 0) {
                 tempCtx.drawImage(canvas, 0, 0);
             }
-            canvas.width = content.offsetWidth;
-            canvas.height = content.offsetHeight;
+            canvas.width = notebookContent.offsetWidth;
+            canvas.height = notebookContent.offsetHeight;
             if (tempCanvas.width > 0 && tempCanvas.height > 0) {
                 ctx.drawImage(tempCanvas, 0, 0, canvas.width, canvas.height);
             }
@@ -419,17 +512,21 @@
             const date = page.date ? new Date(page.date) : new Date();
             dateDisplay.textContent = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
-            // Применяем адаптивные стили к загруженному контенту
-            updateParagraphLineHeight();
-            updatePageLayout();
+            const isEven = (index + 1) % 2 === 0;
+            const scaledMarginPos = REF_MARGIN_POS * currentScale;
+            const scaledPaddingSmall = REF_PADDING_SMALL * currentScale;
+            const scaledPaddingLarge = REF_PADDING_LARGE * currentScale;
+            
+            editor.style.padding = isEven ? `0 ${scaledPaddingLarge}px 0 ${scaledPaddingSmall}px` : `0 ${scaledPaddingSmall}px 0 ${scaledPaddingLarge}px`;
+            marginLine.style.left = isEven ? 'auto' : scaledMarginPos + 'px';
+            marginLine.style.right = isEven ? scaledMarginPos + 'px' : 'auto';
+            pageFooter.style.left = isEven ? 'auto' : scaledMarginPos + 'px';
+            pageFooter.style.right = isEven ? scaledMarginPos + 'px' : 'auto';
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (page.drawing) {
                 const img = new Image();
-                img.onload = () => {
-                    // Масштабируем рисунок под текущий размер canvas
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                };
+                img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 img.src = page.drawing;
             }
 
@@ -449,15 +546,21 @@
             const date = page.date ? new Date(page.date) : new Date();
             dateDisplay.textContent = date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
 
-            updateParagraphLineHeight();
-            updatePageLayout();
+            const isEven = (index + 1) % 2 === 0;
+            const scaledMarginPos = REF_MARGIN_POS * currentScale;
+            const scaledPaddingSmall = REF_PADDING_SMALL * currentScale;
+            const scaledPaddingLarge = REF_PADDING_LARGE * currentScale;
+            
+            editor.style.padding = isEven ? `0 ${scaledPaddingLarge}px 0 ${scaledPaddingSmall}px` : `0 ${scaledPaddingSmall}px 0 ${scaledPaddingLarge}px`;
+            marginLine.style.left = isEven ? 'auto' : scaledMarginPos + 'px';
+            marginLine.style.right = isEven ? scaledMarginPos + 'px' : 'auto';
+            pageFooter.style.left = isEven ? 'auto' : scaledMarginPos + 'px';
+            pageFooter.style.right = isEven ? scaledMarginPos + 'px' : 'auto';
 
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             if (page.drawing) {
                 const img = new Image();
-                img.onload = () => {
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                };
+                img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 img.src = page.drawing;
             }
 
@@ -528,20 +631,23 @@
         function startDraw(e) {
             isDrawing = true;
             const rect = canvas.getBoundingClientRect();
-            lastX = e.clientX - rect.left; lastY = e.clientY - rect.top;
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            lastX = (e.clientX - rect.left) * scaleX;
+            lastY = (e.clientY - rect.top) * scaleY;
         }
 
         function draw(e) {
             if (!isDrawing) return;
             const rect = canvas.getBoundingClientRect();
-            const x = e.clientX - rect.left, y = e.clientY - rect.top;
-            
-            // Масштабируем координаты с учётом возможного CSS-масштабирования canvas
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
+            const x = (e.clientX - rect.left) * scaleX;
+            const y = (e.clientY - rect.top) * scaleY;
             
             ctx.lineWidth = brushSize.value * Math.max(scaleX, scaleY);
-            ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+            ctx.lineCap = 'round'; 
+            ctx.lineJoin = 'round';
 
             if (currentMode === 'erase') {
                 ctx.globalCompositeOperation = 'destination-out';
@@ -550,8 +656,12 @@
                 ctx.strokeStyle = colorPicker.value;
             }
 
-            ctx.beginPath(); ctx.moveTo(lastX * scaleX, lastY * scaleY); ctx.lineTo(x * scaleX, y * scaleY); ctx.stroke();
-            lastX = x; lastY = y;
+            ctx.beginPath(); 
+            ctx.moveTo(lastX, lastY); 
+            ctx.lineTo(x, y); 
+            ctx.stroke();
+            lastX = x; 
+            lastY = y;
         }
 
         canvas.addEventListener('mousedown', startDraw);
@@ -721,6 +831,8 @@
             const saved = localStorage.getItem('multi-notebook-pages');
             if (saved) { try { pages = JSON.parse(saved); } catch (e) { pages = []; } }
         }
+
+        editor.style.fontFamily = "'Caveat', cursive";
 
         init();
     </script>
